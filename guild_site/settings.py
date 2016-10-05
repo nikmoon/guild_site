@@ -37,6 +37,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'guild_site',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -100,3 +101,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
 STATIC_URL = '/static/'
+
+GUILD = {
+    'name': 'Мастер Шифу',
+    'server': 'Ревущий фьорд',
+    'fraction': 'Орда',
+    'wow_page': 'http://eu.battle.net/wow/ru/guild/ревущий-фьорд/Мастер_Шифу/',
+}

@@ -1,0 +1,60 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Гильдия {{ guild.name }}</title>
+    <link rel="stylesheet" type="text/css" href="{% static "guild_site/guild_site.css" %}"
+</head>
+<body>
+
+    <!--
+        Заголовок
+    -->
+    <div id="header">
+        <a href="{{guild.wow_page}}" target="_blank">
+            <img id="guild_tabard" src="{% static "guild_site/images/guild_tabard.png" %}" />
+            <h1 id="guild_name">{{guild.name}}</h1>
+            <h4>{{guild.server}} ({{guild.fraction}})</h4>
+        </a>
+    </div>
+
+
+    <!--
+        Навигация по сайту
+    -->
+    <div id="nav">
+        <h3>Навигация</h3>
+    </div>
+
+
+    <!--
+        Важная информация вкратце
+    -->
+    <div id="info">
+        <h3>Коротко о главном</h3>
+        Мы рейдим в среду, четверг и воскресенье с 20:00 до 23:00 мск
+    </div>
+
+    <!--
+        Основной контент
+    -->
+    <div id="content">
+        <h3>Новости</h3>
+
+        <div class="news_block">
+            <div class="news_info">
+                <p>nikbird, 05.10.2016</p>
+            </div>
+            <h4 class="news_title">Статик медленно но верно набирает людей. Поэтому бла-бла-бла и бла. Хмм... Еще бла бла бла.</h4>
+            <div class="news_text">
+                5 октября 2016г., в среду, вместе с нами в Изумрудный Кошмар пойдут
+                несколько новых игроков: во-первых - новый хант Аркангела; во-вторых - наша Саша немножно приодела своего
+                друида Луннэт и тоже решила с нами порейдить; в-третьих, к нам решила присоединиться пара из бдк и рдру.
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>
