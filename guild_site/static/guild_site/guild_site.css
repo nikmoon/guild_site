@@ -2,93 +2,80 @@
     margin: 0;
 }
 
-a {
-    text-decoration: none;
-    color: inherit;
+
+.blackbrdr {
+    border: 1px solid black;
 }
 
-/*html, body {
-//    margin: 0;
-//    height: 100%;
-}*/
+.title {
+    text-align: center;
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
+
 
 html {
+    height: 100%;
     background-color: #DDDDDD;
 }
 
 body {
-    border: 1px solid red;
-    margin-left: auto;
-    margin-right: auto;
+    box-sizing: border-box;
+    margin: 0 auto;
+    padding: 5px;
     background-color: #B0C4DE;
     color: #505050;
-    padding: 5px 0;
     min-width: 800px;
     max-width: 1000px;
 }
 
-div {
-    margin: 5px;
-    padding: 5px;
+
+div#header {
+    margin: 0;
+    text-align: center;
+    line-height: 100px;
+    position: relative;
 }
+
+
+div#site_title, div#guild_name {
+    display: inline-block;
+    line-height: normal;
+}
+
+
+div#guild_name, img#guild_tabard {
+    vertical-align: middle;
+}
+
 
 img#guild_tabard {
-    width: 120px;
     height: 120px;
-    float: left;
-}
-
-#header {
-/*    border: 1px solid black;
-    text-align: center;*/
-}
-
-h1#guild_name {
-    color: #AA0000;
 }
 
 
-#nav, #info {
-    clear: left;
-    margin-top: 0;
-/*    text-align: center;*/
-    width: 300px;
-/*    min-height: 200px;*/
-    border: 1px solid black;
-    float: left;
+div#nav, div#raid_time {
+    margin: 5px 0 0;
+    float: right;
+    width: 30%;
+}
+
+div#raid_time {
+    clear: right;
+    margin-bottom: 5px;
+}
+
+div#content {
+    margin: 5px 0;
+    margin-right: 30.7%;
+}
+
+div#nav, div#content, div#raid_time, div#footer {
+    padding: 5px;
     box-sizing: border-box;
 }
 
-h3 {
-    margin-bottom: 10px;
-}
 
-#content {
-    margin-left: 310px;
-    border: 1px solid black;
-    min-height: 500px;
-/*    text-align: center;*/
-}
-
-
-div.news_block {
-    border: 3px solid blue;
-    margin: 0;
-}
-
-h4.news_title {
-    text-align: center;
-    width: 80%;
-    margin: 5px auto;
-}
-
-div.news_info {
-    margin: 0;
-    padding: 0;
-    font-size: 1em;
-}
-
-div.news_text {
-    margin: 0;
-    padding: 0;
+div#footer {
+    clear: right;
 }

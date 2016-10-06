@@ -3,57 +3,60 @@
 <html>
 <head>
     <meta charset="utf-8" />
-    <title>Гильдия {{ guild.name }}</title>
+    <title>Гильдия Мастер Шифу</title>
     <link rel="stylesheet" type="text/css" href="{% static "guild_site/guild_site.css" %}"
 </head>
 <body>
+<!--            <img id="guild_tabard" src="{% static "guild_site/images/guild_tabard.png" %}" /> -->
 
     <!--
         Заголовок
     -->
-    <div id="header">
-        <a href="{{guild.wow_page}}" target="_blank">
-            <img id="guild_tabard" src="{% static "guild_site/images/guild_tabard.png" %}" />
-            <h1 id="guild_name">{{guild.name}}</h1>
-            <h4>{{guild.server}} ({{guild.fraction}})</h4>
-        </a>
+    <div id="header" class="blackbrdr">
+        <div id="site_title">
+            <div id="guild_name">
+                <h1>Мастер Шифу</h1>
+                <h3>Ревущий фьорд (орда)</h3>
+            </div>
+            <a href="{{ guild.wow_page }}" target="_blank">
+                <img id="guild_tabard" src="{% static "guild_site/images/guild_tabard.png" %}" />
+            </a>
+        </div>
     </div>
 
 
     <!--
         Навигация по сайту
     -->
-    <div id="nav">
-        <h3>Навигация</h3>
+    <div id="nav" class="blackbrdr">
+        <h4 class="title">Навигация</h4>
     </div>
 
 
     <!--
-        Важная информация вкратце
+        Важная информация
     -->
-    <div id="info">
-        <h3>Коротко о главном</h3>
-        Мы рейдим в среду, четверг и воскресенье с 20:00 до 23:00 мск
+    <div id="raid_time" class="blackbrdr">
+        <h4 class="title">Когда мы рейдим</h4>
+        <p>
+            Мы рейдим с 20:00 до 23:00 мск 3 дня в неделю: в среду, четверг и воскресенье.
+        </p>
     </div>
 
+
     <!--
-        Основной контент
+        Контент сайта
     -->
-    <div id="content">
+    <div id="content" class="blackbrdr">
         <h3>Новости</h3>
+    </div>
 
-        <div class="news_block">
-            <div class="news_info">
-                <p>nikbird, 05.10.2016</p>
-            </div>
-            <h4 class="news_title">Статик медленно но верно набирает людей. Поэтому бла-бла-бла и бла. Хмм... Еще бла бла бла.</h4>
-            <div class="news_text">
-                5 октября 2016г., в среду, вместе с нами в Изумрудный Кошмар пойдут
-                несколько новых игроков: во-первых - новый хант Аркангела; во-вторых - наша Саша немножно приодела своего
-                друида Луннэт и тоже решила с нами порейдить; в-третьих, к нам решила присоединиться пара из бдк и рдру.
-            </div>
-        </div>
 
+    <!--
+        Подвальчик
+    -->
+    <div id="footer" class="blackbrdr">
+        <h4>Подвальчик</h4>
     </div>
 
 </body>

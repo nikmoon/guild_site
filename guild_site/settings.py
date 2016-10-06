@@ -106,5 +106,6 @@ GUILD = {
     'name': 'Мастер Шифу',
     'server': 'Ревущий фьорд',
     'fraction': 'Орда',
-    'wow_page': 'http://eu.battle.net/wow/ru/guild/ревущий-фьорд/Мастер_Шифу/',
+#    'wow_page': 'http://eu.battle.net/wow/ru/guild/ревущий-фьорд/Мастер_Шифу/',
+    'wow_page': '/',
 }
