@@ -7,7 +7,6 @@
     <link rel="stylesheet" type="text/css" href="{% static "guild_site/guild_site.css" %}"
 </head>
 <body>
-<!--            <img id="guild_tabard" src="{% static "guild_site/images/guild_tabard.png" %}" /> -->
 
     <!--
         Заголовок
@@ -38,9 +37,7 @@
     -->
     <div id="raid_time" class="blackbrdr">
         <h4 class="title">Когда мы рейдим</h4>
-        <p>
-            Мы рейдим с 20:00 до 23:00 мск 3 дня в неделю: в среду, четверг и воскресенье.
-        </p>
+        <p>Мы рейдим с 20:00 до 23:00 мск 3 дня в неделю: в среду, четверг и воскресенье.</p>
     </div>
 
 
@@ -48,7 +45,15 @@
         Контент сайта
     -->
     <div id="content" class="blackbrdr">
-        <h3>Новости</h3>
+        <h2 class="news_title title">Новости</h2>
+
+        {% for item in news %}
+        <div class="news_block">
+            <h4 class="news_item_title">{{item.title}}</h4>
+            <div class="news_info">{{item.author}}, {{item.was_created}}</div>
+            <p class="news_text">{{item.text}}</p>
+        </div>
+        {% endfor %}
     </div>
 
 

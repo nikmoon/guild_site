@@ -1,6 +1,8 @@
-* {
+/* {
     margin: 0;
-}
+    margin-bottom: 5px;
+    padding: 5px;
+}*/
 
 
 .blackbrdr {
@@ -19,22 +21,35 @@ html {
     background-color: #DDDDDD;
 }
 
+body, body * {
+    margin: 0;
+    margin-bottom: 5px;
+    padding: 5px;
+}
+
 body {
     box-sizing: border-box;
     margin: 0 auto;
-    padding: 5px;
     background-color: #B0C4DE;
     color: #505050;
     min-width: 800px;
     max-width: 1000px;
 }
 
+div {
+    box-sizing: border-box;
+}
+
 
 div#header {
-    margin: 0;
     text-align: center;
     line-height: 100px;
     position: relative;
+}
+
+div#header * {
+    margin: 0;
+    padding: 0;
 }
 
 
@@ -55,27 +70,49 @@ img#guild_tabard {
 
 
 div#nav, div#raid_time {
-    margin: 5px 0 0;
     float: right;
     width: 30%;
 }
 
 div#raid_time {
     clear: right;
-    margin-bottom: 5px;
 }
 
 div#content {
-    margin: 5px 0;
-    margin-right: 30.7%;
-}
-
-div#nav, div#content, div#raid_time, div#footer {
-    padding: 5px;
-    box-sizing: border-box;
+    margin-right: 30.5%;
+    overflow: auto;
 }
 
 
 div#footer {
     clear: right;
+    margin-bottom: 0;
+}
+
+.news_block {
+/*    border: 1px solid blue;*/
+    border-bottom: 3px solid white;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.news_block * {
+    padding: 0;
+    margin: 0;
+}
+
+.news_title {
+    margin-left: auto;
+    margin-right: auto;
+    width: 30%;
+    border-bottom: 3px solid blue;
+}
+
+.news_info {
+    text-align: right;
+}
+
+.news_text {
+    text-indent: 30px;
+    text-align: justify;
 }
