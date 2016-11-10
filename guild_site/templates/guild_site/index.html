@@ -44,16 +44,16 @@
     <!--
         Контент сайта
     -->
-    <div id="content" class="blackbrdr">
+    <div id="content" class="">
         <h2 class="news_title title">Последние новости</h2>
 
         {% for item in news %}
         <div class="news_block">
             <div class="news_item_header">
                 <h3 class="news_item_title">{{item.title}}</h3>
-                <div class="news_info">{{item.author}}<br /> {{item.was_created}}</div>
+                <div class="news_item_info">{{item.author}}<br />{{item.was_created}}</div>
             </div>
-            <p class="news_text blackbrdr">{{item.text}}</p>
+            <p class="news_text">{{item.text}}</p>
         </div>
         {% endfor %}
     </div>

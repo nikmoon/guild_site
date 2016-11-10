@@ -112,8 +112,9 @@ div#footer {
 
 .news_item_header {
     position: relative;
-    margin-bottom: 10px;
     background-color: #AAAAAA;
+    border: 1px solid black;
+    border-bottom: none;
 }
 
 .news_item_title {
@@ -121,11 +122,10 @@ div#footer {
     display: inline-block;
     max-width: 75%;
     vertical-align: middle;
-/*    background-color: #AAAAAA;*/
     box-sizing: border-box;
 }
 
-.news_info {
+.news_item_info {
     position: absolute;
     right: 0;
     text-align: right;
@@ -136,9 +136,11 @@ div#footer {
 }
 
 .news_text {
-    padding: 5px;
+    padding: 10px 5px;
     text-indent: 5%;
     text-align: justify;
     background-color: #BBBBBB;
+    border: 1px solid black;
+    border-top: none;
 }
 
