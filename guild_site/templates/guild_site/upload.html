@@ -1,7 +1,10 @@
 {% extends "guild_site/base.html" %}
 
+{% block title %}Загрузка файла на сервер{% endblock %}
+
 
 {% block content %}
+<!--
     <h2 class="news_title title">Последние новости</h2>
     {% for item in news %}
     <div class="news_block">
@@ -12,6 +15,12 @@
         <p class="news_text">{{item.text}}</p>
     </div>
     {% endfor %}
+-->
+
+    <form enctype="multipart/form-data" method="post" action="">
+        {% csrf_token %}
+        {{ form }}
+        <input type="submit" value="Отправить файл">
+    </form>
 {% endblock %}
- 
 

@@ -13,18 +13,11 @@ Including another URLconf
     1. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
 from django.conf.urls import include, url
-from django.contrib import admin
-from .views import IndexPageView
-from chat import urls as chat_urls
-
-
-django_patterns = [
-    url(r'^$', IndexPageView.as_view(), name='index'),
-    url(r'chat/', include(chat_urls)),
-    url(r'admin/', include(admin.site.urls)),
-]
-
+from .views import ChatPageView
 
 urlpatterns = [
-    url(r'^django/', include(django_patterns)),
+    url(r'', ChatPageView.as_view(), name='chat'),
 ]
+
+
+

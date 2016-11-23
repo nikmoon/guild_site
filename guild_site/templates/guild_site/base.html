@@ -1,0 +1,68 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>{% block title %}Гильдия {{ guild.name }}{% endblock %}</title>
+    <link rel="stylesheet" type="text/css" href="{% static "guild_site/guild_site.css" %}"/>
+</head>
+<body>
+
+    <!--  Заголовок  -->
+    <div id="header" class="blackbrdr">
+        {% block header %}
+        <div id="site_title">
+            <div id="guild_name">
+                <h1>{{ guild.name  }}</h1>
+                <h3>{{ guild.server }} ({{ guild.fraction }})</h3>
+            </div>
+            <a href="{{ guild.wow_page }}" target="_blank">
+                <img id="guild_tabard" src="{% static "guild_site/images/guild_tabard.png" %}" />
+            </a>
+        </div>
+        {% endblock %}
+    </div>
+
+    <!--   Важная информация   -->
+    <div id="raid_time" class="blackbrdr">
+        <h4>Когда мы рейдим</h4>
+        <p>
+            <span class="">Пн</span>
+            <span class="">Вт</span>
+            <span class="raid_day">Ср</span>
+            <span class="raid_day">Чт</span>
+            <span class="">Пт</span>
+            <span class="">Сб</span>
+            <span class="raid_day">Вс</span>
+        </p>
+        <p>20:00 - 23:00 (мск)</p>
+    </div>
+
+    <!--   Навигация по сайту  -->
+    <div id="nav" class="blackbrdr">
+        <h4 class="title">Навигация</h4>
+        {% block navigation %}
+            <div>
+                <ul>
+                    <li><a href="{% url 'index' %}">На главную</a></li>
+                    <li><a href="{% url 'chat' %}">Гильдейский чат</a></li>
+                </ul>
+            </div>
+        {% endblock %}
+    </div>
+
+    <!--  Контент сайта  -->
+    <div id="content" class="">
+        {% block content %}
+        {% endblock %}
+    </div>
+
+    <!--  Подвальчик  -->
+    <div id="footer" class="">
+        {% block footer %}
+        <!--<h4>Подвальчик</h4>-->
+        {% endblock %}
+    </div>
+
+</body>
+</html>
