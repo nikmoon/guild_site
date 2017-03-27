@@ -32,7 +32,7 @@ body {
     margin: 0 auto;
     background-color: #B0C4DE;
     min-width: 800px;
-/*    max-width: 1000px;*/
+    max-width: 1100px;
 }
 
 div {
@@ -86,15 +86,13 @@ span.raid_day {
 }
 
 div#content {
+    padding-top: 10px;
+    padding-bottom: 10px;
     margin-right: 21.5%;
     overflow: auto;
 }
 
 
-div#footer {
-    clear: both;
-    margin-bottom: 0;
-}
 
 .news_block {
 /*    border: 1px solid blue;*/
@@ -150,3 +148,28 @@ div#footer {
     border-top: none;
 }
 
+
+div#footer {
+    clear: both;
+    margin-bottom: 0;
+    padding: 10px;
+    text-align: center;
+}
+
+.center_inline_block {
+    display: inline-block;
+/*    margin-left: auto;
+    margin-right: auto;*/
+    margin: auto;
+}
+
+.footer_link {
+    display: inline-block;
+    margin: auto 10px;
+    text-decoration: none;
+}
+
+a.footer_link:hover {
+    color: blue;
+    background-color: lightgreen;
+}

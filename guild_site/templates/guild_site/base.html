@@ -25,7 +25,7 @@
 
     <!--   Важная информация   -->
     <div id="raid_time" class="blackbrdr">
-        <h4>Когда мы рейдим</h4>
+        <h4>Когда мы рейдим:</h4>
         <p>
             <span class="raid_day">Пн</span>
             <span class="">Вт</span>
@@ -44,7 +44,8 @@
         {% block navigation %}
             <div>
                 <ul>
-                    <li><a href="{% url 'index' %}">На главную</a></li>
+                    <li><a href="">На главную</a></li>
+                    <li><a href="">Набор в статик</a></li>
                     <li><a href="{% url 'chat' %}">Гильдейский чат</a></li>
                 </ul>
             </div>
@@ -52,15 +53,14 @@
     </div>
 
     <!--  Контент сайта  -->
-    <div id="content" class="">
+    <div id="content" class="blackbrdr">
         {% block content %}
         {% endblock %}
     </div>
 
     <!--  Подвальчик  -->
-    <div id="footer" class="">
+    <div id="footer" class="blackbrdr">
         {% block footer %}
-        <!--<h4>Подвальчик</h4>-->
         {% endblock %}
     </div>
 

@@ -25,7 +25,7 @@ SECRET_KEY = '6*xk&j_lgt86cmo5l1qqzerh%1$3psm004!)u8j(_x8!dqz_42'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["188.120.224.19"]
 
 
 # Application definition
@@ -107,6 +107,6 @@ GUILD = {
     'name': 'Мастер Шифу',
     'server': 'Ревущий фьорд',
     'fraction': 'Орда',
-#    'wow_page': 'http://eu.battle.net/wow/ru/guild/ревущий-фьорд/Мастер_Шифу/',
-    'wow_page': '/',
+    'wow_page': 'http://eu.battle.net/wow/ru/guild/ревущий-фьорд/Мастер_Шифу/',
+#    'wow_page': '',
 }
