@@ -16,7 +16,10 @@ from guild_site.settings import COMET_SERVER, COMET_URL_NOTIFY_USER_LOGIN, COMET
 def send_comet_notification(data, notifyURL):
     url = COMET_SERVER + notifyURL
     request = HTTPRequest(url, method='POST', body=json.dumps(data))
-    HTTPClient().fetch(request)
+    try:
+        HTTPClient().fetch(request)
+    except Exception:
+        pass
 
 
 def login_view(request):
