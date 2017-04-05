@@ -50,6 +50,9 @@ class PostMessage(tornado.web.RequestHandler):
 
 
 class UserLogin(tornado.web.RequestHandler):
+    #
+    #   Обработчик уведомления о входе пользователя
+    #
     def post(self):
         userData = json.loads(self.request.body.decode("utf-8"))
         Users[userData['sessionid']] = userData['username']
@@ -57,6 +60,9 @@ class UserLogin(tornado.web.RequestHandler):
 
 
 class UserLogout(tornado.web.RequestHandler):
+    #
+    #   Обработчик уведомления о выходе пользователя
+    #
     def post(self):
         userData = json.loads(self.request.body.decode('utf-8'))
         if userData['sessionid'] in Users:

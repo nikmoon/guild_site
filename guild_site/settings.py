@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
-from . import secret_key
+from . import secret
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -21,7 +21,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = secret_key.SECRET_KEY
+SECRET_KEY = secret.SECRET_KEY
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -81,9 +81,9 @@ WSGI_APPLICATION = 'guild_site.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'guild_site',
-        'USER': 'guild_site',
-        'PASSWORD': 'chfysqcgfvth123',
+        'NAME': secret.DB_NAME,
+        'USER': secret.DB_USER,
+        'PASSWORD': secret.DB_PASSWORD,
         'HOST': 'localhost',
         'PORT': '',
     }
@@ -113,9 +113,11 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
-PROJECT_URL = '/guild_site/'
-
 STATIC_URL = '/guild_site/static/'
+
+LOGIN_URL = 'login'
+
+PROJECT_URL = '/guild_site/'
 
 COMET_SERVER = r'http://127.0.0.1:8001'
 COMET_URL_BASE = r'/comet/guild_site/'
