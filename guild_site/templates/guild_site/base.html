@@ -23,8 +23,20 @@
         {% endblock %}
     </div>
 
+    <!-- Данные о пользователе -->
+    <div id="user_info" class="sidebar blackbrdr">
+    {% if request.user.is_authenticated %}
+        <h3 class="title">{{ request.user.username }}</h3>
+        <h4 class="title"><a href="{% url 'logout'%}">(выход)</a></h4>
+    {% else %}
+        <h3 class="title">
+            <a href="{% url 'login' %}">Войти</a>
+        </h3>
+    {% endif %}
+    </div>
+
     <!--   Важная информация   -->
-    <div id="raid_time" class="blackbrdr">
+    <div id="raid_time" class="sidebar blackbrdr">
         <h4>Когда мы рейдим:</h4>
         <p>
             <span class="raid_day">Пн</span>
@@ -39,21 +51,32 @@
     </div>
 
     <!--   Навигация по сайту  -->
-    <div id="nav" class="blackbrdr">
+    <div id="nav" class="sidebar blackbrdr">
         <h4 class="title">Навигация</h4>
         {% block navigation %}
             <div>
                 <ul>
-                    <li><a href="">На главную</a></li>
-                    <li><a href="">Набор в статик</a></li>
+                    <li><a href="{% url 'index' %}">На главную</a></li>
+                    <li><a href="{% url 'recruitment' %}">Прием в гильдию</a></li>
                     <li><a href="{% url 'chat' %}">Гильдейский чат</a></li>
                 </ul>
             </div>
         {% endblock %}
     </div>
 
+    <!-- Ссылки на полезные странички гильдии на других сайтах-->
+    <div id="guild_links" class="sidebar blackbrdr">
+        <h4 class="title">Ссылки на нас:</h4>
+        {% block guild_links %}
+            <ul>
+                <li><a href="https://www.wowprogress.com/guild/eu/ревущий-фьорд/Мастер+Шифу" target="_blank">Мы на Wowprogress</a></li>
+                <li><a href="https://www.warcraftlogs.com/guilds/218032" target="_blank">Наши логи на Warcraftlogs</a></li>
+            </ul>
+        {% endblock %}
+    </div>
+
     <!--  Контент сайта  -->
-    <div id="content" class="blackbrdr">
+    <div id="content" class="">
         {% block content %}
         {% endblock %}
     </div>
@@ -61,6 +84,8 @@
     <!--  Подвальчик  -->
     <div id="footer" class="blackbrdr">
         {% block footer %}
+            <a class="" href="https://www.wowprogress.com" target="_blank">Wowoprogress</a>
+            <a class="footer_link" href="https://www.warcraftlogs.com" target="_blank">Warcraft Logs</a>
         {% endblock %}
     </div>
 

@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
+import secret_key
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -20,12 +21,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '6*xk&j_lgt86cmo5l1qqzerh%1$3psm004!)u8j(_x8!dqz_42'
+SECRET_KEY = secret_key.SECRET_KEY
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["188.120.224.19"]
+ALLOWED_HOSTS = ["127.0.0.1"]
 
 
 # Application definition
@@ -38,6 +39,8 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'guild_site',
+    'auth_app',
+    'chat',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -77,9 +80,18 @@ WSGI_APPLICATION = 'guild_site.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'guild_site',
+        'USER': 'guild_site',
+        'PASSWORD': 'chfysqcgfvth123',
+        'HOST': 'localhost',
+        'PORT': '',
     }
+
+    #'default': {
+    #    'ENGINE': 'django.db.backends.sqlite3',
+    #    'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    #}
 }
 
 
@@ -101,7 +113,16 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
-STATIC_URL = '/django/static/'
+PROJECT_URL = '/guild_site/'
+
+STATIC_URL = '/guild_site/static/'
+
+COMET_SERVER = r'http://127.0.0.1:8001'
+COMET_URL_BASE = r'/comet/guild_site/'
+COMET_URL_POST_MESSAGE = COMET_URL_BASE + r'message/post/'
+COMET_URL_GET_MESSAGE  = COMET_URL_BASE + r'message/get/'
+COMET_URL_NOTIFY_USER_LOGIN  = COMET_URL_BASE + r'user/login/'
+COMET_URL_NOTIFY_USER_LOGOUT = COMET_URL_BASE + r'user/logout/'
 
 GUILD = {
     'name': 'Мастер Шифу',
@@ -110,3 +131,4 @@ GUILD = {
     'wow_page': 'http://eu.battle.net/wow/ru/guild/ревущий-фьорд/Мастер_Шифу/',
 #    'wow_page': '',
 }
+

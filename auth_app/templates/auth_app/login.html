@@ -1,0 +1,26 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>{% block title %}Вход на сайт{% endblock %}</title>
+    <!--<link rel="stylesheet" type="text/css" href="{% static "guild_site/guild_site.css" %}"/>-->
+</head>
+<body>
+    <a href="{%url 'index' %}">На главную</a>
+    <form action="{% url 'login' %}" method="POST">
+        {% csrf_token %}
+        <p>
+            {{ form.username.errors }}
+            {{ form.username.label_tag }}
+            {{ form.username }}
+        </p>
+        <p>
+            {{ form.password.errors }}
+            {{ form.password.label_tag }}
+            {{ form.password }}
+        </p>
+        <input type="submit" value="Вход" />
+    </form>
+</body>
+</html>

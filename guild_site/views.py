@@ -16,6 +16,16 @@ class IndexPageView(TemplateView):
         return context
 
 
+class RecruitmentView(TemplateView):
+
+    template_name = 'guild_site/recruitment.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(RecruitmentView, self).get_context_data(**kwargs)
+        context['guild'] = GUILD
+        return context
+
+
 '''
 from django import forms
 

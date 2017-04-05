@@ -33,12 +33,26 @@ body {
     background-color: #B0C4DE;
     min-width: 800px;
     max-width: 1100px;
+    color: #404040;
 }
 
 div {
     box-sizing: border-box;
 }
 
+
+/*****  ССЫЛКИ   *****/
+
+/* базовый стиль */
+a {
+    text-decoration: none;
+}
+
+
+
+ul {
+    padding-left: 25px;
+}
 
 div#header {
     text-align: center;
@@ -50,7 +64,6 @@ div#header * {
     margin: 0;
     padding: 0;
 }
-
 
 div#site_title, div#guild_name {
     display: inline-block;
@@ -67,13 +80,6 @@ img#guild_tabard {
     height: 120px;
 }
 
-
-div#nav, div#raid_time {
-    clear: right;
-    float: right;
-    width: 21%;
-}
-
 div#raid_time {
     font-size: 0.8em;
 	text-align: center;
@@ -88,14 +94,19 @@ span.raid_day {
 div#content {
     padding-top: 10px;
     padding-bottom: 10px;
-    margin-right: 21.5%;
+    margin-right: 20.5%;
     overflow: auto;
 }
 
-
+.sidebar {
+    clear: right;
+    float: right;
+    width: 20%;
+    padding: 5px;
+    font-size: 0.9em;
+}
 
 .news_block {
-/*    border: 1px solid blue;*/
     border-bottom: 3px solid white;
     padding: 10px;
     margin-bottom: 10px;
@@ -139,37 +150,42 @@ div#content {
     font-size: 12px;
 }
 
-.news_text {
+.news_text,
+.recruitment_text {
     padding: 10px 5px;
     text-indent: 5%;
     text-align: justify;
     background-color: #BBBBBB;
     border: 1px solid black;
+/*    border-top: none;*/
+}
+
+.news_text {
     border-top: none;
 }
 
 
-div#footer {
+.recruitment_text {
+    margin: 5px 5%;
+}
+
+#footer {
     clear: both;
     margin-bottom: 0;
     padding: 10px;
     text-align: center;
 }
 
-.center_inline_block {
-    display: inline-block;
-/*    margin-left: auto;
-    margin-right: auto;*/
-    margin: auto;
-}
 
-.footer_link {
+#footer a {
     display: inline-block;
     margin: auto 10px;
     text-decoration: none;
 }
 
-a.footer_link:hover {
+.sidebar a:hover,
+#footer a:hover
+{
     color: blue;
     background-color: lightgreen;
 }
