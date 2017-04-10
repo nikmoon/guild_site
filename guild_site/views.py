@@ -1,8 +1,22 @@
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, render_to_response
-from django.views.generic.base import TemplateView
+from django.views.generic.base import TemplateView, View
 from .models import NewsItem
-from .settings import GUILD
+
+#from .settings import GUILD
+from . import settings
+
+
+class MySecretView(View):
+
+    def dispatch(self, request, *args, **kwargs):
+        secret = request.GET.get('secret')
+        if True:
+        #if secret and secret == settings.SECRET_KEY:
+            return super(MySecretView, self).dispatch(request, *args, **kwargs)
+
+        return HttpResponse('Вам сюда нельзя', status=401)
+
 
 
 class IndexPageView(TemplateView):
@@ -11,7 +25,7 @@ class IndexPageView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(IndexPageView, self).get_context_data(**kwargs)
-        context['guild'] = GUILD
+        context['guild'] = settings.GUILD
         context['news'] = NewsItem.objects.order_by('-id')[:5]
         return context
 
@@ -22,7 +36,7 @@ class RecruitmentView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(RecruitmentView, self).get_context_data(**kwargs)
-        context['guild'] = GUILD
+        context['guild'] = settings.GUILD
         return context
 
 

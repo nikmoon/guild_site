@@ -13,10 +13,13 @@ Including another URLconf
     1. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
 from django.conf.urls import include, url
-from .views import ChatPageView
+from .views import ChatPageView, MessageView, LatestMessagesView, LastIDView
 
 urlpatterns = [
-    url(r'', ChatPageView.as_view(), name='chat'),
+    url(r'^$', ChatPageView.as_view(), name='chat'),
+    url(r'^message/$', MessageView.as_view(), name='message'),
+    url(r'^message/latest/$', LatestMessagesView.as_view(), name='latest'),
+    url(r'^message/lastid/$', LastIDView.as_view(), name='lastid'),
 ]
 
 

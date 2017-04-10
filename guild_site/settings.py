@@ -121,10 +121,12 @@ PROJECT_URL = '/guild_site/'
 
 COMET_SERVER = r'http://127.0.0.1:8001'
 COMET_URL_BASE = r'/comet/guild_site/'
-COMET_URL_POST_MESSAGE = COMET_URL_BASE + r'message/post/'
-COMET_URL_GET_MESSAGE  = COMET_URL_BASE + r'message/get/'
-COMET_URL_NOTIFY_USER_LOGIN  = COMET_URL_BASE + r'user/login/'
-COMET_URL_NOTIFY_USER_LOGOUT = COMET_URL_BASE + r'user/logout/'
+COMET_URL_MESSAGE  = COMET_URL_BASE + r'message/'
+
+# данные адреса не должны пропускаться через внешний прокси-сервер,
+# т.к. проверка прав доступа в обработчиках не производится
+COMET_URL_NOTIFY_LOGIN  = COMET_URL_BASE + r'login/'
+COMET_URL_NOTIFY_LOGOUT = COMET_URL_BASE + r'logout/'
 
 GUILD = {
     'name': 'Мастер Шифу',
