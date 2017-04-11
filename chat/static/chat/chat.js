@@ -47,7 +47,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
             if (this.readyState != xhr.DONE)
                 return;
 
-            if (this.status == 200) {
+            if (this.status == 200 || this.status == 504) {
                 var data = JSON.parse(this.responseText);
                 messages = data['messages'];
                 messages.forEach(function(item, i, arr) {
@@ -57,8 +57,11 @@ document.addEventListener("DOMContentLoaded", function(event) {
                 });
                 divMessages.scrollTop = divMessages.scrollHeight;
                 lastID = messages[messages.length - 1].id;
+                setTimeout(get_new_message, 30);
             }
-            get_new_message();
+            else {
+                setTimeout(get_new_message, 5000);
+            }
         }
 
         var endURL = messageURL + '?lastid=' + lastID;

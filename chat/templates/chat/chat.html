@@ -13,7 +13,7 @@
 
     <div id="messages" class="blackbrdr" style="min-height: 200px; height: 300px; overflow: auto">
         {% for msg in lastMessages %}
-        <p>{{ msg.msgCreated}} {{ msg.msgAuthor }}: {{ msg.msgText }}</p>
+        <p>{{ msg.created}} {{ msg.author }}: {{ msg.text }}</p>
         {% endfor %}
     </div>
 

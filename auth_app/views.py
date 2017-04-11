@@ -10,7 +10,6 @@ from tornado.httpclient import HTTPClient, HTTPRequest
 
 from .forms import LoginForm 
 from guild_site import settings
-from guild_site.views import SecretView
 
 # Create your views here.
 

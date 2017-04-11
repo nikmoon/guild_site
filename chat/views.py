@@ -8,7 +8,6 @@ from django.core.urlresolvers import reverse
 
 from .models import ChatMessage
 from guild_site import settings
-from guild_site.views import SecretView
 import json
 
 
@@ -27,8 +26,8 @@ class ChatPageView(TemplateView):
         context = super(ChatPageView, self).get_context_data(**kwargs)
         context['guild'] = settings.GUILD
         context['msgURL'] = settings.COMET_MSG_URL
-        context['lastMessages'] = [msg for msg in ChatMessage.objects.order_by('-id')[:20]][::-1]
-        context['lastID'] = context['lastMessages'][-1].id
+        context['lastMessages'] = [msg.to_dict() for msg in ChatMessage.objects.order_by('-id')[:20]][::-1]
+        context['lastID'] = context['lastMessages'][-1]['id']
         return context
 
 
