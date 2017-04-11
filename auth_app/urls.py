@@ -23,7 +23,8 @@ from . import views
 urlpatterns = [
     url(r'^login/$', views.login_view, name='login'),
     url(r'^logout/$', views.logout_view, name='logout'),
-    url(r'^users/$', views.users_view, name='users'),
+    url(r'^userinfo/$', views.UserInfoView.as_view(), name='user_info'),
+#    url(r'^users/$', views.UsersView.as_view(), name='users'),
 
     
     #url(r'^$', IndexPageView.as_view(), name='index'),

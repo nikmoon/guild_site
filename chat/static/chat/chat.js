@@ -9,12 +9,11 @@
 document.addEventListener("DOMContentLoaded", function(event) {
     "user strict"
 
-    var messageURLPost = document.getElementById('msg_url_post').value;
-    var messageURLGet = document.getElementById('msg_url_get').value;
-    var postMsgButton = document.getElementById('post_message');
-    var msgTextArea = document.getElementById('message_text');
+    var messageURL = document.getElementById('msgURL').value;
+    var postMsgButton = document.getElementById('postMessage');
+    var msgTextArea = document.getElementById('messageText');
     var divMessages = document.getElementById('messages');
-    var lastID = document.getElementById('last_id').value;
+    var lastID = document.getElementById('lastID').value;
 
 
     // прокрутка списка сообщений вверх
@@ -32,10 +31,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
         var xhr = new XMLHttpRequest();
         xhr.onreadystatechange = function() {
-            //console.log('status: ' + this.status);
-            //console.log('state: ' + this.readyState);
         }
-        xhr.open('POST', messageURLPost, true);
+        xhr.open('POST', messageURL, true);
         xhr.send(msgTextArea.value);
         msgTextArea.value = "";
     })
@@ -45,16 +42,27 @@ document.addEventListener("DOMContentLoaded", function(event) {
         var xhr = new XMLHttpRequest();
         
         xhr.onreadystatechange = function() {
-            //console.log('status: ' + this.status);
-            //console.log('state: ' + this.readyState);
+            var messages;
+            var p;
+            if (this.readyState != xhr.DONE)
+                return;
+
+            if (this.status == 200) {
+                var data = JSON.parse(this.responseText);
+                messages = data['messages'];
+                messages.forEach(function(item, i, arr) {
+                    p = document.createElement('p');
+                    p.innerHTML = item.created + ' ' + item.author + ': ' + item.text;
+                    divMessages.appendChild(p);
+                });
+                divMessages.scrollTop = divMessages.scrollHeight;
+                lastID = messages[messages.length - 1].id;
+            }
+            get_new_message();
         }
 
-
-        //var data = JSON.stringify({ 'lastID': lastID });
-        //alert(data);
-        var endURL = messageURLGet + '?lastid=' + lastID;
-        alert(endURL);
-        xhr.open('GET', messageURLGet + '?lastid=' + lastID, true);
+        var endURL = messageURL + '?lastid=' + lastID;
+        xhr.open('GET', messageURL + '?lastid=' + lastID, true);
         xhr.send();
 
     }

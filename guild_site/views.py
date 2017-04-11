@@ -1,21 +1,22 @@
+
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, render_to_response
 from django.views.generic.base import TemplateView, View
+
 from .models import NewsItem
 
-#from .settings import GUILD
 from . import settings
 
 
-class MySecretView(View):
+class SecretView(View):
 
     def dispatch(self, request, *args, **kwargs):
-        secret = request.GET.get('secret')
+        secret = request.META.get('HTTP_SECRET')
         if True:
         #if secret and secret == settings.SECRET_KEY:
-            return super(MySecretView, self).dispatch(request, *args, **kwargs)
+            return super(SecretView, self).dispatch(request, *args, **kwargs)
 
-        return HttpResponse('Вам сюда нельзя', status=401)
+        return HttpResponse('Вам сюда нельзя', status=403)
 
 
 

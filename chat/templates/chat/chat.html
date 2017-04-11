@@ -12,17 +12,16 @@
     </noscript>
 
     <div id="messages" class="blackbrdr" style="min-height: 200px; height: 300px; overflow: auto">
-        {% for msg in last_messages %}
+        {% for msg in lastMessages %}
         <p>{{ msg.msgCreated}} {{ msg.msgAuthor }}: {{ msg.msgText }}</p>
         {% endfor %}
     </div>
 
-    <input id="last_id" type="text" hidden="true" value="{{ last_id }}">
-    <input id="msg_url_post" type="text" hidden="true" value="{{ msg_url_post }}">
-    <input id="msg_url_get" type="text" hidden="true" value="{{ msg_url_get }}">
+    <input id="lastID" type="text" hidden="true" value="{{ lastID }}">
+    <input id="msgURL" type="text" hidden="true" value="{{ msgURL }}">
 
-    <textarea id="message_text" style="width: 400px; height: 100px"></textarea>
-    <button id="post_message">Отправить сообщение</button>
+    <textarea id="messageText" style="width: 400px; height: 100px"></textarea>
+    <button id="postMessage">Отправить сообщение</button>
 
     <script src="{% static 'chat/chat.js' %}"></script>
 {% endblock %}

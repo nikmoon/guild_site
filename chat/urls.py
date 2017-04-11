@@ -19,7 +19,7 @@ urlpatterns = [
     url(r'^$', ChatPageView.as_view(), name='chat'),
     url(r'^message/$', MessageView.as_view(), name='message'),
     url(r'^message/latest/$', LatestMessagesView.as_view(), name='latest'),
-    url(r'^message/lastid/$', LastIDView.as_view(), name='lastid'),
+    #url(r'^message/lastid/$', LastIDView.as_view(), name='lastid'),
 ]
 
 

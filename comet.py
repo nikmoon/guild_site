@@ -12,6 +12,8 @@
 
 import tornado.ioloop
 import tornado.web
+from tornado import gen
+from tornado.concurrent import Future
 from tornado.httputil import url_concat
 from tornado.httpclient import HTTPRequest, HTTPClient, AsyncHTTPClient
 from datetime import datetime
@@ -26,86 +28,77 @@ from guild_site import settings
 dj_settings.configure(ROOT_URLCONF=settings.ROOT_URLCONF)
 
 
-def get_from_django(djURL, args=None):
-    theUrl = url_concat('http://127.0.0.1:8000' + djURL, args)
-    request = HTTPRequest(theUrl)
-    return json.loads(HTTPClient().fetch(request).body.decode('utf-8'))
+@gen.coroutine
+def async_request_django(djangoURI, method='GET', body=None, args=None, headers=None, raw=False):
+    fullURL = url_concat(settings.DJANGO_SERVER + djangoURI, args)
+    client = AsyncHTTPClient()
+    response = yield client.fetch(fullURL, method=method, body=body,  headers=headers)
+    if raw:
+        return response.body
+    else:
+        return json.loads(response.body.decode('utf-8'))
 
 
-#result = get_from_django(reverse('latest'), {'count': 5})
-#for record in result:
-#    record['created'] = datetime.strptime(record['created'], "%c")
-#    record['lastChanged'] = datetime.strptime(record['lastChanged'], "%c")
-#print(result)
-
-
-# словарь залогиненных пользователей
-# sessionID: username
-#request = HTTPRequest('http://127.0.0.1:8000' + reverse('users'), body=json.dumps({'secret': settings.SECRET_KEY}), allow_nonstandard_methods=True)
-#result = HTTPClient().fetch(request).body
-#USERS = json.loads(result.decode('utf-8'))
-USERS = get_from_django(reverse('users'), { 'secret': settings.SECRET_KEY })
-print(USERS)
-
-
-
-# ID последнего сообщения в БД
-#request = HTTPRequest('http://127.0.0.1:8000' + reverse('lastid'), body=json.dumps({'secret': settings.SECRET_KEY}), allow_nonstandard_methods=True)
-#result = HTTPClient().fetch(request).body
-#LAST_ID = int(result)
-LAST_ID = get_from_django(reverse('lastid'), { 'secret': settings.SECRET_KEY })
-print(LAST_ID)
+def request_django(djangoURI, args=None, headers=None, raw=False):
+    fullURL = url_concat(settings.DJANGO_SERVER + djangoURI, args)
+    client = HTTPClient()
+    response = client.fetch(fullURL, headers=headers)
+    if raw:
+        return response.body
+    else:
+        return json.loads(response.body.decode('utf-8'))
 
 
 # словарь клиентов, ожидающих новые сообщения
-WAITERS = {}
-
+WAITERS = []
 
 
 class MessageHandler(tornado.web.RequestHandler):
 
+    @gen.coroutine
     def get(self):
-        sessionid = self.get_cookie('sessionid')
-        #if sessionid not in Users:
-        #   тут мы посылаем неизвестных лиц нахер
+        data = yield self.get_last_messages()
+        if data and 'username' in data:
+            if data['messages']:
+                self.write(data)
+            else:
+                self.waitFuture = Future()
+                WAITERS.append(self.waitFuture)
+                msg = yield self.waitFuture
+                self.write(msg)
+        else:
+            self.write({})
+            self.set_status(self.get_status())
+        return
 
-        clientLastID = int(self.get_argument('lastid'))
-        if clientLastID < LAST_ID:
-            messageBytes = get_from_django(reverse('latest'), { 'count': LAST_ID - clientLastID })
-            messages = json.loads(messageBytes.decode('utf-8'))
-            #for msgRecord in messages:
-            #
-            
 
-
-class UserLogin(tornado.web.RequestHandler):
-    #
-    #   Обработчик уведомления о входе пользователя
-    #   Через nginx данный URL не проходит, проверку прав доступа можно не делать
-    #
+    @gen.coroutine
     def post(self):
-        userData = json.loads(self.request.body.decode("utf-8"))
-        Users[userData['sessionid']] = userData['username']
-        print('after login, Users = ', Users)
+        sessionID = self.get_cookie('sessionid')
+        if sessionID:
+            headers = {'Cookie': 'sessionid=' + sessionID}
+            result = yield async_request_django(reverse('message'), method='POST', body=self.request.body, headers=headers)
+            for waiter in WAITERS:
+                waiter.set_result(result)
+            WAITERS.clear()
 
 
-class UserLogout(tornado.web.RequestHandler):
-    #
-    #   Обработчик уведомления о выходе пользователя
-    #   Через nginx данный URL не проходит, проверку прав доступа можно не делать
-    #
-    def post(self):
-        userData = json.loads(self.request.body.decode('utf-8'))
-        if userData['sessionid'] in Users:
-            del Users[userData['sessionid']]
-        print('after logout, Users = ', Users)
+    @gen.coroutine
+    def get_last_messages(self):
+        sessionID = self.get_cookie('sessionid')
+        if sessionID:
+            args = {'lastid': self.get_argument('lastid')}
+            headers = {'Cookie': 'sessionid=' + sessionID}
+            result = yield async_request_django(reverse('latest'), args=args, headers=headers)
+        else:
+            result = {}
+        return result
 
+        
 
 def make_app():
     return tornado.web.Application([
-        (settings.COMET_URL_MESSAGE, MessageHandler),
-        (settings.COMET_URL_NOTIFY_LOGIN, UserLogin),
-        (settings.COMET_URL_NOTIFY_LOGOUT, UserLogout),
+        (settings.COMET_MSG_URL, MessageHandler),
     ])
 
 

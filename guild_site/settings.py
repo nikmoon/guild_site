@@ -113,20 +113,19 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
-STATIC_URL = '/guild_site/static/'
+PROJECT_URL = '/guild_site/'
+
+STATIC_URL = PROJECT_URL + 'static/'
 
 LOGIN_URL = 'login'
 
-PROJECT_URL = '/guild_site/'
 
-COMET_SERVER = r'http://127.0.0.1:8001'
-COMET_URL_BASE = r'/comet/guild_site/'
-COMET_URL_MESSAGE  = COMET_URL_BASE + r'message/'
+DJANGO_SERVER = 'http://127.0.0.1:8000'
 
-# данные адреса не должны пропускаться через внешний прокси-сервер,
-# т.к. проверка прав доступа в обработчиках не производится
-COMET_URL_NOTIFY_LOGIN  = COMET_URL_BASE + r'login/'
-COMET_URL_NOTIFY_LOGOUT = COMET_URL_BASE + r'logout/'
+COMET_SERVER = 'http://127.0.0.1:8001'
+COMET_URL = '/comet' + PROJECT_URL
+COMET_MSG_URL = COMET_URL + 'message/'
+
 
 GUILD = {
     'name': 'Мастер Шифу',

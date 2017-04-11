@@ -1,29 +1,46 @@
 
 from django.shortcuts import render
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.core.urlresolvers import reverse
 from django.contrib.auth import authenticate, login, logout
+from django.views.generic.base import View
 
 import json
 from tornado.httpclient import HTTPClient, HTTPRequest
 
 from .forms import LoginForm 
 from guild_site import settings
+from guild_site.views import SecretView
 
 # Create your views here.
 
 
 # Пользователи, вошедшие на сайт
-Users = {}
+#Users = {}
 
 
-def send_comet_notification(data, notifyURL):
-    url = settings.COMET_SERVER + notifyURL
-    request = HTTPRequest(url, method='POST', body=json.dumps(data))
-    try:
-        HTTPClient().fetch(request)
-    except Exception:
-        pass
+#def send_comet_notification(data, notifyURL):
+#    url = settings.COMET_SERVER + notifyURL
+#    request = HTTPRequest(url, method='POST', body=json.dumps(data))
+#    try:
+#        HTTPClient().fetch(request)
+#    except Exception:
+#        pass
+
+
+class UserInfoView(View):
+    #
+    #   Получение информации о пользователе,
+    #   пославшем запрос
+    #
+    def get(self, request):
+        if request.user.is_authenticated():
+            userInfo = {
+                'username': request.user.username,
+            }
+        else:
+            userInfo = {}
+        return JsonResponse(userInfo)
 
 
 def login_view(request):
@@ -40,11 +57,11 @@ def login_view(request):
             user = authenticate(username=username, password=password)
             if user is not None:
                 login(request, user)
-                Users[request.session.session_key] = user
-                send_comet_notification(
-                    {'username': username, 'sessionid': request.session.session_key},
-                    settings.COMET_URL_NOTIFY_LOGIN
-                )
+                #Users[request.session.session_key] = user
+                #send_comet_notification(
+                #    {'username': username, 'sessionid': request.session.session_key},
+                #    settings.COMET_URL_NOTIFY_LOGIN
+                #)
                 return HttpResponseRedirect(nextPage)
     else:
         form = LoginForm()
@@ -55,15 +72,21 @@ def login_view(request):
 def logout_view(request):
     sessionid = request.session.session_key
     logout(request)
-    if sessionid in Users:
-        del Users[sessionid]
-    send_comet_notification(
-        {'username': request.user.username, 'sessionid': sessionid},
-        settings.COMET_URL_NOTIFY_LOGOUT
-    )
+    #if sessionid in Users:
+    #    del Users[sessionid]
+    #send_comet_notification(
+    #    {'username': request.user.username, 'sessionid': sessionid},
+    #    settings.COMET_URL_NOTIFY_LOGOUT
+    #)
     return HttpResponseRedirect(reverse('index'))
 
 
+class UsersView(SecretView):
+
+    def get(self, request):
+        return HttpResponse(json.dumps({ sessionID: Users[sessionID].username for sessionID in Users}))
+        
+'''
 def users_view(request):
     if request.body:
         data = json.loads(request.body.decode('utf-8'))
@@ -71,5 +94,6 @@ def users_view(request):
             return HttpResponse(json.dumps({ sessionID: Users[sessionID].username for sessionID in Users}))
 
     return HttpResponse('вам сюда нельзя', status=401)
+'''
 
 
