@@ -43,7 +43,6 @@ class MessageView(View):
     def dispatch(self, *args, **kwargs):
         return super(MessageView, self).dispatch(*args, **kwargs)
 
-
     def post(self, request):
         if not request.user.is_authenticated():
             return JsonResponse({'error': 'Unknown user'}, status=403)
@@ -75,14 +74,6 @@ class LatestMessagesView(View):
             'username': request.user.username
         }
         return JsonResponse(data)
-
-
-class LastIDView(View):
-    #
-    #   Возвращает ID последнего сообщения
-    #
-    def get(self, request):
-        return HttpResponse(ChatMessage.objects.latest('id').id)
 
 
 

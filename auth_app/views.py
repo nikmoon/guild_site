@@ -15,34 +15,6 @@ from guild_site.views import SecretView
 # Create your views here.
 
 
-# Пользователи, вошедшие на сайт
-#Users = {}
-
-
-#def send_comet_notification(data, notifyURL):
-#    url = settings.COMET_SERVER + notifyURL
-#    request = HTTPRequest(url, method='POST', body=json.dumps(data))
-#    try:
-#        HTTPClient().fetch(request)
-#    except Exception:
-#        pass
-
-
-class UserInfoView(View):
-    #
-    #   Получение информации о пользователе,
-    #   пославшем запрос
-    #
-    def get(self, request):
-        if request.user.is_authenticated():
-            userInfo = {
-                'username': request.user.username,
-            }
-        else:
-            userInfo = {}
-        return JsonResponse(userInfo)
-
-
 def login_view(request):
     if request.user.is_authenticated():
         return HttpResponseRedirect(reverse('index'))
@@ -72,19 +44,13 @@ def login_view(request):
 def logout_view(request):
     sessionid = request.session.session_key
     logout(request)
-    #if sessionid in Users:
-    #    del Users[sessionid]
-    #send_comet_notification(
-    #    {'username': request.user.username, 'sessionid': sessionid},
-    #    settings.COMET_URL_NOTIFY_LOGOUT
-    #)
     return HttpResponseRedirect(reverse('index'))
 
 
-class UsersView(SecretView):
-
-    def get(self, request):
-        return HttpResponse(json.dumps({ sessionID: Users[sessionID].username for sessionID in Users}))
+#class UsersView(SecretView):
+#
+#    def get(self, request):
+#        return HttpResponse(json.dumps({ sessionID: Users[sessionID].username for sessionID in Users}))
         
 '''
 def users_view(request):

@@ -8,18 +8,6 @@ from .models import NewsItem
 from . import settings
 
 
-class SecretView(View):
-
-    def dispatch(self, request, *args, **kwargs):
-        secret = request.META.get('HTTP_SECRET')
-        if True:
-        #if secret and secret == settings.SECRET_KEY:
-            return super(SecretView, self).dispatch(request, *args, **kwargs)
-
-        return HttpResponse('Вам сюда нельзя', status=403)
-
-
-
 class IndexPageView(TemplateView):
 
     template_name = 'guild_site/index.html'
@@ -40,26 +28,4 @@ class RecruitmentView(TemplateView):
         context['guild'] = settings.GUILD
         return context
 
-
-'''
-from django import forms
-
-
-class UploadFileForm(forms.Form):
-    title = forms.CharField(max_length=80)
-    file = forms.FileField()
-
-
-def upload_file(request):
-    if request.method == 'POST':
-        form = UploadFileForm(request.POST, request.FILES)
-        if form.is_valid():
-            with open('db.sqlite3.from_client', "wb+") as dest_file:
-                for chunk in request.FILES['file'].chunks():
-                    dest_file.write(chunk)
-            return HttpResponseRedirect('/django/')
-    else:
-        form = UploadFileForm()
-    return render(request, 'guild_site/upload.html', {'guild': GUILD, 'form': form} )
-'''
 
