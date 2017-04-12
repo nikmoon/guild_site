@@ -13,21 +13,20 @@ import json
 
 
 
-class ChatPageView(TemplateView):
+class IndexView(TemplateView):
 
     template_name = 'chat/chat.html'
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
-        return super(ChatPageView, self).dispatch(*args, **kwargs)
+        return super().dispatch(*args, **kwargs)
 
 
     def get_context_data(self, **kwargs):
-        context = super(ChatPageView, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         context['guild'] = settings.GUILD
         context['msgURL'] = settings.COMET_MSG_URL
-        context['lastMessages'] = [msg.to_dict() for msg in ChatMessage.objects.order_by('-id')[:20]][::-1]
-        context['lastID'] = context['lastMessages'][-1]['id']
+        context['lastID'] = ChatMessage.objects.order_by('-id')[0].id
         return context
 
 
@@ -40,7 +39,8 @@ class MessageView(View):
 
     @method_decorator(csrf_exempt)
     def dispatch(self, *args, **kwargs):
-        return super(MessageView, self).dispatch(*args, **kwargs)
+        return super().dispatch(*args, **kwargs)
+
 
     def post(self, request):
         if not request.user.is_authenticated():
@@ -55,24 +55,42 @@ class MessageView(View):
 
 class LatestMessagesView(View):
     #
-    #   Возвращает сообщения после id = lastid
+    #   Возвращает последние сообщения:
+    #   если задан параметр count - последние count сообщений;
+    #   если задан параметр lastid - все сообщения с id > lastid
     #
     def get(self, request):
         if not request.user.is_authenticated():
             return JsonResponse({'error': 'Unknown user'}, status=403)
 
-        try:
-            lastID = int(request.GET.get('lastid'))
-            if lastID < 1:
-                raise Exception()
-        except:
-            return JsonResponse({'error': 'Invalid lastid'}, status=400)
- 
-        data = {
-            'messages': [msg.to_dict() for msg in ChatMessage.objects.filter(id__gt=lastID).order_by('id')],
-            'username': request.user.username
-        }
-        return JsonResponse(data)
+        count = request.GET.get('count')
+        if count:
+            try:
+                count = int(count)
+                return JsonResponse({
+                    'messages': [msg.to_dict() for msg in ChatMessage.objects.order_by('-id')[:20]][::-1],
+                    'username': request.user.username,
+                })
+            except ValueError:
+                return JsonResponse({'error': 'Invalid count'}, status=400)
+            except Exception:
+                return JsonResponse({'error': 'Unknown error on JsonResponse with count parameter'}, status=400)
 
+
+        lastID = request.GET.get('lastid')
+        if lastID:
+            try:
+                lastID = int(lastID)
+                return JsonResponse( {
+                    'messages': [msg.to_dict() for msg in ChatMessage.objects.filter(id__gt=lastID).order_by('id')],
+                    'username': request.user.username
+                })
+            except ValueError:
+                return JsonResponse({'error': 'Invalid lastid'}, status=400)
+            except Exception:
+                return JsonResponse({'error': 'Unknown error on JsonResponse with lastid parameter'}, status=400)
+
+
+        return JsonResponse({'error': 'Set count or lastid parameter'}, status=400)
 
 

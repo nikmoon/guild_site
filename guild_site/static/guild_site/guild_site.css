@@ -98,6 +98,21 @@ div#content {
     overflow: auto;
 }
 
+div#messages {
+    font-size: 14px;
+    min-height: 200px;
+    max-height: 400px;
+    padding: 10px 10px 0;
+    overflow: auto;
+}
+
+div#messages:after {
+    content: "";
+    height: 10px;
+    display: block;
+}
+
+
 .sidebar {
     clear: right;
     float: right;

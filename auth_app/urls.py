@@ -14,22 +14,12 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 #from django.contrib import admin
-#from .views import IndexPageView, RecruitmentView
-#from chat import urls as chat_urls
 
-from . import views
+from .views import LoginView, LogoutView
 
 
 urlpatterns = [
-    url(r'^login/$', views.login_view, name='login'),
-    url(r'^logout/$', views.logout_view, name='logout'),
-#    url(r'^userinfo/$', views.UserInfoView.as_view(), name='user_info'),
-#    url(r'^users/$', views.UsersView.as_view(), name='users'),
-
-    
-    #url(r'^$', IndexPageView.as_view(), name='index'),
-    #url(r'recruitment', RecruitmentView.as_view(), name='recruitment'),
-    #url(r'chat/', include(chat_urls)),
-    #url(r'admin/', include(admin.site.urls)),
+    url(r'^login/$', LoginView.as_view(), name='login'),
+    url(r'^logout/$', LogoutView.as_view(), name='logout'),
 ]
 

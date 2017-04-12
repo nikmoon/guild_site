@@ -87,7 +87,7 @@ class MessageHandler(tornado.web.RequestHandler):
     def get_last_messages(self):
         sessionID = self.get_cookie('sessionid')
         if sessionID:
-            args = {'lastid': self.get_argument('lastid')}
+            args = {'lastid': self.get_argument('lastid',''), 'count': self.get_argument('count','')}
             headers = {'Cookie': 'sessionid=' + sessionID}
             result = yield async_request_django(reverse('latest'), args=args, headers=headers)
         else:

@@ -12,11 +12,13 @@ class ChatMessage(models.Model):
     msgText = models.TextField(blank=True, default='', verbose_name='текст сообщения')
     msgAuthor = models.ForeignKey(User)
 
+    dateFormat = "%x %X"
+
     def to_dict(self):
         return {
             'id': self.id,
-            'created': self.msgCreated.strftime("%c"),
-            'lastChanged': self.msgLastChanged.strftime("%c"),
+            'created': self.msgCreated.strftime(self.dateFormat),
+            'lastChanged': self.msgLastChanged.strftime(self.dateFormat),
             'text': escape(self.msgText),
             'author': escape(self.msgAuthor.username),
         }
