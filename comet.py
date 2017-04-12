@@ -53,10 +53,14 @@ def request_django(djangoURI, args=None, headers=None, raw=False):
 WAITERS = []
 
 
-class MessageHandler(tornado.web.RequestHandler):
+class MessagesHandler(tornado.web.RequestHandler):
 
     @gen.coroutine
     def get(self):
+        #
+        #   Возвращаем клиенту те сообщения, которых у него нет
+        #   или ждем новое сообщение и посылаем его клиенту
+        #
         data = yield self.get_last_messages()
         if data and 'username' in data:
             if data['messages']:
@@ -68,28 +72,30 @@ class MessageHandler(tornado.web.RequestHandler):
                 self.write(msg)
         else:
             self.write({})
-            self.set_status(self.get_status())
+            self.set_status(403)
         return
 
 
     @gen.coroutine
     def post(self):
-        sessionID = self.get_cookie('sessionid')
-        if sessionID:
-            headers = {'Cookie': 'sessionid=' + sessionID}
-            result = yield async_request_django(reverse('message'), method='POST', body=self.request.body, headers=headers)
-            for waiter in WAITERS:
-                waiter.set_result(result)
-            WAITERS.clear()
+        data = json.loads(self.request.body.decode('utf-8)'))
+        if data.get('secret') != settings.SECRET_KEY:
+            self.set_status(403)
+            return
+        del data['secret']
+        for waiter in WAITERS:
+            waiter.set_result(data)
+        WAITERS.clear()
 
 
     @gen.coroutine
     def get_last_messages(self):
         sessionID = self.get_cookie('sessionid')
         if sessionID:
-            args = {'lastid': self.get_argument('lastid',''), 'count': self.get_argument('count','')}
+            lastID = self.get_argument('lastid','')
+            args = {'lastid': lastID} if lastID else None
             headers = {'Cookie': 'sessionid=' + sessionID}
-            result = yield async_request_django(reverse('latest'), args=args, headers=headers)
+            result = yield async_request_django(reverse('messages'), args=args, headers=headers)
         else:
             result = {}
         return result
@@ -98,7 +104,7 @@ class MessageHandler(tornado.web.RequestHandler):
 
 def make_app():
     return tornado.web.Application([
-        (settings.COMET_MSG_URL, MessageHandler),
+        (settings.COMET_MSG_URL, MessagesHandler),
     ])
 
 
