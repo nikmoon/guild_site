@@ -24,9 +24,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = secret.SECRET_KEY
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ["127.0.0.1"]
+ALLOWED_HOSTS = ["127.0.0.1", "xn----7sbpnq0afinj6b.xn--c1avg.xn--p1ai"]
 
 
 # Application definition
@@ -115,7 +115,7 @@ USE_TZ = True
 
 PROJECT_URL = '/guild_site/'
 
-STATIC_URL = PROJECT_URL + 'static/'
+STATIC_URL = '/static/'
 
 LOGIN_URL = 'login'
 
