@@ -21,5 +21,10 @@
     <textarea id="messageText" style="width: 400px; height: 100px"></textarea>
     <button id="postMessage">Отправить сообщение</button>
 
+{% endblock %}
+
+{% block scripts %}
+    {{ block.super }}
     <script src="{% static 'chat/chat.js' %}"></script>
 {% endblock %}
+

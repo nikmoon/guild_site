@@ -40,22 +40,43 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
 
     //
+    //  Создание стилизованного сообщения
+    //
+    function create_chat_message(msg) {
+        var divMain = document.createElement('div');
+        var p = document.createElement('p');
+        var text = document.createTextNode("[" + msg.created + "] " + msg.author + " говорит:");
+        p.innerHTML = '<span style="background-color: lightgray;">' + msg.text + "</span>";
+        p.style.marginLeft = '20px';
+        divMain.appendChild(text);
+        divMain.appendChild(p);
+        return divMain;
+    }
+
+    //
     //  Добавление стилизованного сообщения в окно сообщений чата
     //
     function add_chat_messages(messages) {
-        messages.forEach(function(msg, i, arr) {
-            var divMain = document.createElement('div');
-            var p = document.createElement('p');
-            var text = document.createTextNode("[" + msg.created + "] " + msg.author + " говорит:");
-            p.innerHTML = '<span style="background-color: lightgray;">' + msg.text + "</span>";
-            p.style.marginLeft = '20px';
-            divMain.appendChild(text);
-            divMain.appendChild(p);
-            divMessages.appendChild(divMain);
-        });
-        divMessages.scrollTop = divMessages.scrollHeight;
-        lastID = messages[messages.length - 1].id;
+        if (messages.length == 0) {
+            return;
+        }
+        var index = 0;
+        var timerID = setInterval(function() {
+            if (index >= messages.length) {
+                clearInterval(timerID);
+                get_new_messages();
+            }
+            else {
+                chatMsg = create_chat_message(messages[index]);
+                chatMsg.style.display = 'none';
+                divMessages.appendChild(chatMsg);
+                $(chatMsg).fadeIn(1200);
+                divMessages.scrollTop = divMessages.scrollHeight;
+                index += 1;
+            }
+        }, 20);
     }
+
 
     //
     //  Получаем с сервера последние 20 сообщений и показываем
@@ -63,39 +84,55 @@ document.addEventListener("DOMContentLoaded", function(event) {
     function show_last_messages() {
         var xhr = new XMLHttpRequest();
         xhr.onreadystatechange = function() {
-            if (this.readyState == xhr.DONE && this.status == 200) {
-                var messages = JSON.parse(this.responseText)['messages'];
-                add_chat_messages(messages);
-                get_new_message();
+            if (this.readyState == xhr.DONE) {
+                if ( this.status != 200 ) {
+                    setTimeout(show_last_messages, 5000);
+                }
+                else {
+                    var messages = JSON.parse(this.responseText)['messages'];
+                    lastID = messages[messages.length - 1].id;
+                    add_chat_messages(messages);
+                }
             }
         }
         xhr.open('GET', urlGetMsg, true);
         xhr.send();
     }
 
+
     //
     //  Ждем новые сообщения
     //
-    function get_new_message() {
+    function get_new_messages() {
         var xhr = new XMLHttpRequest();
+        var minTimeout = 5000;
+        var startReq, timeoutDelta;
         
         xhr.onreadystatechange = function() {
-            var timeOut = 20;
             if (this.readyState != xhr.DONE)
                 return;
 
             if (this.status == 200) {
                 var messages = JSON.parse(this.responseText)['messages'];
+                lastID = messages[messages.length - 1].id;
                 add_chat_messages(messages);
             }
-            else if (this.status != 504){       // 504 - Gateway time-out
-                timeOut = 5000;
+            else {
+                timeoutDelta = minTimeout - (Date.now() - startReq);
+                if (timeoutDelta > 300) {
+                    setTimeout(get_new_messages, timeoutDelta);
+                }
+                else {
+                    get_new_messages();
+                }
             }
-            setTimeout(get_new_message, timeOut);
         }
+
         xhr.open('GET', urlGetMsg + '?lastid=' + lastID, true);
         xhr.send();
+        startReq = Date.now();
     }
+
     show_last_messages();
 });
 
