@@ -7,13 +7,14 @@
 
 
 document.addEventListener("DOMContentLoaded", function(event) {
-    "user strict"
+    "use strict"
 
     var urlGetMsg = document.getElementById('urlGetMsg').value;
     var urlPostMsg = document.getElementById('urlPostMsg').value;
     var postMsgButton = document.getElementById('postMessage');
     var msgTextArea = document.getElementById('messageText');
     var divMessages = document.getElementById('messages');
+    var chatDiv = null;
     var lastID;
 
 
@@ -54,10 +55,11 @@ document.addEventListener("DOMContentLoaded", function(event) {
     }
 
     //
-    //  Добавление стилизованного сообщения в окно сообщений чата
+    //  Добавление сообщений в окно сообщений чата
     //
     function add_chat_messages(messages) {
         if (messages.length == 0) {
+            get_new_messages();
             return;
         }
         var index = 0;
@@ -67,7 +69,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
                 get_new_messages();
             }
             else {
-                chatMsg = create_chat_message(messages[index]);
+                var chatMsg = create_chat_message(messages[index]);
                 chatMsg.style.display = 'none';
                 divMessages.appendChild(chatMsg);
                 $(chatMsg).fadeIn(1200);
@@ -84,7 +86,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     function show_last_messages() {
         var xhr = new XMLHttpRequest();
         xhr.onreadystatechange = function() {
-            if (this.readyState == xhr.DONE) {
+            if (this.readyState == xhr.DONE && this.status != 0) {
                 if ( this.status != 200 ) {
                     setTimeout(show_last_messages, 5000);
                 }
@@ -109,28 +111,27 @@ document.addEventListener("DOMContentLoaded", function(event) {
         var startReq, timeoutDelta;
         
         xhr.onreadystatechange = function() {
-            if (this.readyState != xhr.DONE)
-                return;
-
-            if (this.status == 200) {
-                var messages = JSON.parse(this.responseText)['messages'];
-                lastID = messages[messages.length - 1].id;
-                add_chat_messages(messages);
-            }
-            else {
-                timeoutDelta = minTimeout - (Date.now() - startReq);
-                if (timeoutDelta > 300) {
-                    setTimeout(get_new_messages, timeoutDelta);
+            if (this.readyState == xhr.DONE && this.status != 0) {
+                if (this.status == 200) {
+                    var messages = JSON.parse(this.responseText)['messages'];
+                    lastID = messages[messages.length - 1].id;
+                    add_chat_messages(messages);
                 }
-                else {
-                    get_new_messages();
+                else {  // если в ответ пришла ошибка, следующий запрос отправляем не раньше, чем пройдет minTimeout мсек
+                    timeoutDelta = minTimeout - (Date.now() - startReq);    // выясняем, сколько осталось до минимального таймаута
+                    if (timeoutDelta > 0) {
+                        setTimeout(get_new_messages, timeoutDelta);
+                    }
+                    else {
+                        get_new_messages();
+                    }
                 }
             }
         }
 
         xhr.open('GET', urlGetMsg + '?lastid=' + lastID, true);
         xhr.send();
-        startReq = Date.now();
+        startReq = Date.now();  // точка начала запроса
     }
 
     show_last_messages();
